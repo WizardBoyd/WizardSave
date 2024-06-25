@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using SaveSystem.SaveData;
 
-namespace SaveSystem.Interface
+namespace WizardSave
 {
     public interface IDataService
     {

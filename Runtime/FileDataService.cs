@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Newtonsoft.Json;
-using SaveSystem.Interface;
-using SaveSystem.SaveData;
-using UnityEngine;
 
-namespace SaveSystem
+namespace WizardSave
 {
     public class FileDataService<T,TRW> : IDataService where TRW : IFileDataReadWriter<T>,new()
     {

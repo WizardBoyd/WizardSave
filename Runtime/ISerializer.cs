@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 
-namespace SaveSystem.Interface
+namespace WizardSave
 {
     public interface ISerializer<TF>
     {
