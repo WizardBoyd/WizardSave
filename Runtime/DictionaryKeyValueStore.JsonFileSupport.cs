@@ -1,5 +1,4 @@
-// #if HAVE_NEWTONSOFT_JSON
-
+#if HAVE_NEWTONSOFT_JSON
 using System.Collections.Generic;
 using System.IO;
 using WizardSave.Utils;
@@ -28,4 +27,4 @@ namespace WizardSave
         }
     }
 }
-// #endif
+#endif
