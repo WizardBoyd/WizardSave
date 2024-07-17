@@ -39,6 +39,11 @@ namespace WizardSave.Utils
             return WrappedKeyValueStore.TryGetBytes(key, out value);
         }
 
+        public bool TryGetObject(string key, out object value)
+        {
+            return WrappedKeyValueStore.TryGetObject(key, out value);
+        }
+
         public virtual bool TryGetDouble(string key, out double value)
         {
             return WrappedKeyValueStore.TryGetDouble(key, out value);
@@ -97,6 +102,11 @@ namespace WizardSave.Utils
         public virtual void SetBytes(string key, byte[] value)
         {
             WrappedKeyValueStore.SetBytes(key, value);
+        }
+
+        public void SetObject(string key, object value)
+        {
+            WrappedKeyValueStore.SetObject(key, value);
         }
     }
 }

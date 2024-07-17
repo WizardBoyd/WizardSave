@@ -10,6 +10,11 @@ namespace WizardSave
     {
         public readonly Newtonsoft.Json.JsonSerializer JsonSerializer = Newtonsoft.Json.JsonSerializer.CreateDefault();
 
+        public DictionaryKeyValueStore(string path) 
+        {
+            FilePath = path;
+        }
+        
         public override void Load(Stream stream)
         {
             using (var streamReader = new StreamReader(stream))

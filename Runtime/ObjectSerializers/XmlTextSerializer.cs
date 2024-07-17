@@ -18,6 +18,7 @@ namespace WizardSave.ObjectSerializers
             return serializer;
         }
         
+
         public bool TryDeserializeObject<T>(string data, out T obj)
         {
             try
@@ -32,10 +33,34 @@ namespace WizardSave.ObjectSerializers
                 return false;
             }
         }
-        
+        public bool TryDeserializeObject(string data, Type type, out object obj)
+        {
+            try
+            {
+                var serializer = GetCachedXmlSerializer(type);
+                obj = serializer.Deserialize(new System.IO.StringReader(data));
+                return true;
+            }
+            catch(Exception e)
+            {
+                obj = default;
+                return false;
+            }
+        }
+
         public string SerializeObject<T>(T obj)
         {
             var serializer = GetCachedXmlSerializer(typeof(T));
+            using (var writer = new System.IO.StringWriter())
+            {
+                serializer.Serialize(writer, obj);
+                return writer.ToString();
+            }
+        }
+        
+        public string SerializeObject(object obj)
+        {
+            var serializer = GetCachedXmlSerializer(obj.GetType());
             using (var writer = new System.IO.StringWriter())
             {
                 serializer.Serialize(writer, obj);

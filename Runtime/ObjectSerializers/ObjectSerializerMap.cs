@@ -24,7 +24,7 @@ namespace WizardSave.ObjectSerializers
         public ObjectSerializerMap()
         {
             TypeToSerializeMap = new Dictionary<Type, IObjectSerializer>();
-            DefaultSerializer = new JsonUtilityTextSerializer();
+            DefaultSerializer = new StructBinarySerializer();
         }
         
         public IObjectSerializer GetSerializer(Type type)
@@ -38,6 +38,7 @@ namespace WizardSave.ObjectSerializers
         {
             return (IObjectSerializer)GetSerializer(typeof(T));
         }
+        
         
         public void SetSerializer(Type type, IObjectSerializer serializer)
         {

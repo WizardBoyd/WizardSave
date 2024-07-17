@@ -17,11 +17,30 @@ namespace WizardSave.ObjectSerializers
            return JsonConvert.SerializeObject(obj, Settings);
         }
 
+        public string SerializeObject(object obj)
+        {
+            return JsonConvert.SerializeObject(obj, Settings);
+        }
+
         public bool TryDeserializeObject<T>(string data, out T obj)
         {
             try
             {
                 obj = JsonConvert.DeserializeObject<T>(data, Settings);
+                return true;
+            }
+            catch (Exception)
+            {
+                obj = default;
+                return false;
+            }
+        }
+
+        public bool TryDeserializeObject(string data, Type type, out object obj)
+        {
+            try
+            {
+                obj = JsonConvert.DeserializeObject(data, type, Settings);
                 return true;
             }
             catch (Exception)

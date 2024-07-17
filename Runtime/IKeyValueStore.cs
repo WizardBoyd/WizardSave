@@ -13,6 +13,7 @@ namespace WizardSave
         bool TryGetDouble(string key, out double value);
         bool TryGetString(string key, out string value);
         bool TryGetBytes(string key, out byte[] value);
+        
 
         void SetBool(string key, bool value);
         void SetInt(string key, int value);
@@ -21,6 +22,7 @@ namespace WizardSave
         void SetDouble(string key, double value);
         void SetString(string key, string value);
         void SetBytes(string key, byte[] value);
+        
     }
     
     public static partial class IKeyValueStoreExtensions

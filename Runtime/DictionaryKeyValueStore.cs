@@ -7,6 +7,8 @@ namespace WizardSave
     {
          protected Dictionary<string, object> _dictionary = new Dictionary<string, object>();
 
+         public DictionaryKeyValueStore(){}
+         
         public bool HasKey(string key)
         {
             return _dictionary.ContainsKey(key);
@@ -175,6 +177,7 @@ namespace WizardSave
                 return false;
             }
         }
+        
 
         public void SetBool(string key, bool value)
         {
@@ -210,5 +213,6 @@ namespace WizardSave
         {
             _dictionary[key] = Convert.ToBase64String(value);
         }
+        
     }
 }

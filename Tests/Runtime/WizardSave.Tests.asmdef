@@ -1,0 +1,16 @@
+{
+    "name": "WizardSave.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:927d101bf420ce4488e85724ff08a635"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

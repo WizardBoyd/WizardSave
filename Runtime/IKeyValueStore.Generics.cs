@@ -9,6 +9,26 @@ namespace WizardSave
         {
             return TryGetObject(kvs, ObjectSerializerMap.DefaultSerializerMap, key, out value);
         }
+
+        public static bool TryGetObject(this IKeyValueStore keyValueStore, string key, Type type, out object value)
+        {
+            return TryGetObject(keyValueStore, ObjectSerializerMap.DefaultSerializerMap, key, type , out value);
+        }
+
+        public static bool TryGetObject(this IKeyValueStore kvs, ObjectSerializerMap serializerMap, string key, Type type,
+            out object value)
+        {
+            switch (serializerMap.GetSerializer(type))
+            {
+                case ITextSerializer textSerializer:
+                    return kvs.TryGetObject(textSerializer, key,type, out value);
+                case IBinarySerializer binarySerializer:
+                    return kvs.TryGetObject(binarySerializer, key,type, out value);
+                default:
+                    throw new InvalidCastException("Expected default object serializer to be either ITextSerializer or IBinarySerializer type.");
+            }
+        }
+        
         public static bool TryGetObject<T>(this IKeyValueStore kvs, ObjectSerializerMap serializerMap, string key, out T value)
         {
             switch (serializerMap.GetSerializer<T>())
@@ -31,6 +51,14 @@ namespace WizardSave
             return kvs.TryGetString(key, out string s)
                 && serializer.TryDeserializeObject(s, out value);
         }
+        
+        public static bool TryGetObject(this IKeyValueStore kvs, ITextSerializer serializer, string key, Type type, out object value)
+        {
+            value = default;
+            return kvs.TryGetString(key, out string s)
+                   && serializer.TryDeserializeObject(s,type, out value);
+        }
+        
         public static bool TryGetObject<T>(this IKeyValueStore kvs, ITextSerializer<T> serializer, string key, out T value)
         {
             value = default;
@@ -43,13 +71,22 @@ namespace WizardSave
             return kvs.TryGetBytes(key, out byte[] b)
                 && serializer.TryDeserializeObject(b, out value);
         }
+
+        public static bool TryGetObject(this IKeyValueStore kvs, IBinarySerializer serializer, string key, Type type,
+            out object value)
+        {
+            value = default;
+            return kvs.TryGetBytes(key, out byte[] b)
+                && serializer.TryDeserializeObject(b,type, out value);
+        }
+        
         public static bool TryGetObject<T>(this IKeyValueStore kvs, IBinarySerializer<T> serializer, string key, out T value)
         {
             value = default;
             return kvs.TryGetBytes(key, out byte[] b)
                 && serializer.TryDeserializeObject(b, out value);
         }
-
+        
         public static T GetObject<T>(this IKeyValueStore kvs, string key, T defaultValue = default)
         {
             return kvs.TryGetObject(key, out T value) ? value : defaultValue;
@@ -76,6 +113,12 @@ namespace WizardSave
         {
             kvs.SetObject(ObjectSerializerMap.DefaultSerializerMap, key, value);
         }
+        
+        public static void SetObject(this IKeyValueStore kvs, string key, Type type, object value)
+        {
+            kvs.SetObject(ObjectSerializerMap.DefaultSerializerMap, key,type, value);
+        }
+        
         public static void SetObject<T>(this IKeyValueStore kvs, ObjectSerializerMap serializerMap, string key, T value)
         {
             switch (serializerMap.GetSerializer<T>())
@@ -96,6 +139,28 @@ namespace WizardSave
                     throw new InvalidCastException("Expected default object serializer to be either ITextSerializer or IBinarySerializer type.");
             }
         }
+
+        public static void SetObject(this IKeyValueStore kvs, ObjectSerializerMap serializerMap, string key, Type type,  object value)
+        {
+            switch (serializerMap.GetSerializer(type))
+            {
+                case ITextSerializer textSerializer:
+                    kvs.SetObject(textSerializer, key, value);
+                    break;
+                case IBinarySerializer binarySerializer:
+                    kvs.SetObject(binarySerializer, key, value);
+                    break;
+                //TODO: Implement binary serializer
+                default:
+                    throw new InvalidCastException("Expected default object serializer to be either ITextSerializer or IBinarySerializer type.");
+            }
+        }
+
+        public static void SetObject(this IKeyValueStore kvs, ITextSerializer serializer, string key, object value)
+        {
+            kvs.SetString(key, serializer.SerializeObject(value));
+        }
+        
         public static void SetObject<T>(this IKeyValueStore kvs, ITextSerializer serializer, string key, T value)
         {
             kvs.SetString(key, serializer.SerializeObject(value));
@@ -104,6 +169,12 @@ namespace WizardSave
         {
             kvs.SetString(key, serializer.SerializeObject(value));
         }
+        
+        public static void SetObject(this IKeyValueStore kvs, IBinarySerializer serializer, string key, object value)
+        {
+            kvs.SetBytes(key, serializer.SerializeObject(value));
+        }
+        
         public static void SetObject<T>(this IKeyValueStore kvs, IBinarySerializer serializer, string key, T value)
         {
             kvs.SetBytes(key, serializer.SerializeObject(value));
